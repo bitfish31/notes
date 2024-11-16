@@ -1,0 +1,14 @@
+.DS_Store
+.coverage
+.obsidian
+journal
+.env
+.venv
+.vscode
+__pycache__
+output
+pelican-cite/
+pelican-plugins/
+node_modules
+media
+.ipynb_checkpoints

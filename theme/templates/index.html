@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="content">
+{% block content_title %}
+{% endblock %}
+
+{% if page_name == "index" %}
+<div class="intro">
+This is the rendered collections of notes by me, Lex Toumbourou.
+<br><br>
+
+You can find the source on the <a href="https://github.com/lextoumbourou/notes">GitHub project</a>.
+<br><br>
+
+The notes are collecting using my interpretation of the <a href="https://en.wikipedia.org/wiki/Zettelkasten">Zettelkasten method</a>.
+<br><br>
+
+<a href="/pages/about.html">More</a>
+</div>
+{% endif %}
+
+{% if articles_page.has_other_pages() %}
+    {% include 'pagination.html' %}
+{% endif %}
+
+<ul class="articles">
+{% for article in articles_page.object_list %}
+<li>
+  <article class="post">
+    
+    <div class="article-content">
+      <h2>
+        <a href="/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">{{ article.title }}</a>
+      </h2>
+
+      <div class="article-meta">
+        <span class="created">{{ article.date|strftime('%b %d, %Y') }}</span>
+
+        <span class="category">
+          <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category}}</a>{%- for cat in article.subcategories -%}/<a href="{{ SITEURL }}/{{cat.url}}">{{cat.shortname}}</a>{% endfor %}
+        </span>
+
+        <span class="info">
+            {% if article.tags %}
+            &nbsp;
+            {% for t in article.tags %}
+            &nbsp;<a href="{{ SITEURL }}/{{ t.url }}" class="tags{% if tag and tag.name == t.name %} selected{% endif %}">{{ t }}</a>
+            {% endfor %}
+            {% endif %}
+        </span>
+      </div>
+
+      <div class="article-summary">
+        <div class="cover-image">
+          {% if article.cover %}
+          <img src="{{ article.cover }}" />
+          {% endif %}
+        </div>
+        {{ article.summary }}
+      </div>
+
+      <div class="article-link">
+        <a href="{{ SITEURL}}/{{ article.url }}">Read More</a>
+      </div>
+
+      <div class="clear"></div>
+    </div>
+  </article>
+</li>
+{% endfor %}
+</ul>
+
+{% if articles_page.has_other_pages() %}
+    {% include 'pagination.html' %}
+{% endif %}
+
+</section>
+{% endblock content %}

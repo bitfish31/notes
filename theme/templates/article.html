@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - {{ SITENAME }}{% endblock %}
+
+{% block content %}
+<section id="content">
+  
+  <article class="post">
+      <div class="article-content">
+        <h2>
+          <a href="/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">{{ article.title }}</a>
+        </h2>
+
+        <div class="article-meta">
+          <span class="created">{{ article.date|strftime('%b %d, %Y') }}</span>
+
+          <span class="category">
+            {%- if article.parent -%}
+            ../<a href="{{ SITEURL }}/{{ article.parent }}.html">{{ article.parent }}</a>
+            {%- else -%}
+            <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category}}</a>{%- for subcategory in article.subcategories -%}/<a href="{{ SITEURL }}/{{subcategory.url}}">{{subcategory.shortname}}</a>{% endfor %}
+            {% endif %}
+          </span>
+
+          <span class="info">
+              {% if article.tags %}
+              &nbsp;
+              {% for t in article.tags %}
+              &nbsp;<a href="{{ SITEURL }}/{{ t.url }}" class="tags{% if tag and tag.name == t.name %} selected{% endif %}">{{ t }}</a>
+              {% endfor %}
+              {% endif %}
+          </span>
+        </div>
+
+        <div class="article-content">
+          <div class="cover-image">
+            {% if article.cover and not article.hide_cover_in_article %}
+            <img src="{{ article.cover }}" />
+            {% endif %}
+          </div>
+
+          {{ article.content }}
+        </div>
+
+        <div class="clear"></div>
+      </div>
+  </article>
+</section>
+{% endblock %}

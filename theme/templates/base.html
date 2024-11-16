@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GLND6HLD4D"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-GLND6HLD4D');
+    </script>
+
+    <meta charset="utf-8">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>{% block title %}Notes by Lex Toumbourou{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="/theme/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/pygment.css" />
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="//yandex.st/highlightjs/7.3/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css" crossorigin="anonymous">
+    {% block head %}
+    {% endblock %}
+
+    {% if article is defined %}
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{ SITEURL }}/{{ article.url }}" />
+    <meta property="og:title" content="{{ article.title | replace("\"", "&quot;") }}" />
+    <meta property="og:description" content="{{ article.content | striptags | replace("\"", "&quot;") | truncate(196, False, '...') }}" />
+    <meta property="og:image" content="{{ SITEURL }}{{ article.cover }}" />
+    {% else %}
+    <meta property="og:type" content="page" />
+    <meta property="og:url" content="{{ SITEURL }}" />
+    <meta property="og:title" content="{{ SITENAME }}" />
+    <meta property="og:description" content="A collection of notes by Lex Toumbourou." />
+    {% endif %}
+
+    {% block scripts %}
+      <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+      <!--[if lt IE 8]>
+        <link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection">
+      <![endif]-->
+    {% endblock %}
+    <noscript>
+      <style>
+        div.article_body {
+          opacity: 1;
+        }
+        ul.articles {
+          opacity: 1;
+        }
+      </style>
+    </noscript>
+  </head>
+
+  <body>
+
+    <div id="sidebar">
+      <div class="home-menu">
+        <a {% if page_name == "index" %}class="active"{% endif %} href="/">Home</a>
+        <a href="/pages/about.html" {%- if output_file =='pages/about.html' -%}class="active"{% endif %}>About</a>
+      </div>
+
+      <div class="tags-menu sidebar-section">
+        <span class="section-header">
+          <h2><span>Tags</span></h2>
+        </span>
+
+        {%- for tag, articles in (tags|sort_by_article_count)[:12] -%}
+          <a {% if page_name and page_name|string in tag.url|string %}class="active"{% endif %} href="{{ SITEURL}}/{{ tag.url }}">{{ tag }} ({{ articles|count }})</a> 
+        
+        {% endfor %}
+        <a {% if page_name == "tags" %}class="active"{% endif %} href="/tags.html">More</a>
+      </div>
+      <div class="extra-menu">
+      </div>
+    </div>
+
+    <div id="content">
+
+      <div id="header">
+        <h1><a href="/">Notes by Lex Toumbourou</a></h1>
+      </div>
+
+      {% block content %}
+      {% endblock %}
+
+    </div>
+    <script src="//yandex.st/highlightjs/7.3/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
